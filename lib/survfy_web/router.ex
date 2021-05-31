@@ -17,11 +17,34 @@ defmodule SurvfyWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SurvfyWeb do
-    pipe_through :browser
+  scope "/api", SurvfyWeb do
+    pipe_through :api
 
-    live "/", PageLive, :index
+    post "/surveys", SurveysController, :create
+    post "/questions", QuestionsController, :create
+
   end
+
+  scope "/", SurvfyWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    # All surveys from logged user
+    live "/mysurveys", MySurveysLive, :index
+    # Change to a specific survey, all votes + % && close opt
+    live "/mysurveys/survey", SurveyLive, :index
+    # Live to create a survey
+    live "/mysurveys/createsurvey", CreateSurveyLive, :index
+  end
+
+  scope "/", SurvfyWeb do
+    pipe_through [:browser]
+
+    live "/", FirstPageLive, :index
+    live "/allsurveys", AllSurveysLive, :index
+    live "/survey", SurveyVoteLive, :index
+  end
+
+
 
   # Other scopes may use custom stacks.
   # scope "/api", SurvfyWeb do

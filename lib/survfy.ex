@@ -1,9 +1,8 @@
 defmodule Survfy do
-  @moduledoc """
-  Survfy keeps the contexts that define your domain
-  and business logic.
+  alias Survfy.Surveys.Create, as: SurveyCreate
+  alias Survfy.Questions.Create, as: QuestionCreate
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  defdelegate create_survey(params), to: SurveyCreate, as: :call
+  defdelegate create_question(params), to: QuestionCreate, as: :call
+
 end

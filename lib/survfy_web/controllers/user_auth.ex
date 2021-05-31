@@ -132,7 +132,8 @@ defmodule SurvfyWeb.UserAuth do
       conn
     else
       conn
-      |> put_flash(:error, "You must log in to access this page.")
+      |> put_flash(:info, "Você precisa estar logado para ver suas enquetes.
+      No entanto, nada o impede de votar em enquetes já feitas, sem logar!")
       |> maybe_store_return_to()
       |> redirect(to: Routes.user_session_path(conn, :new))
       |> halt()

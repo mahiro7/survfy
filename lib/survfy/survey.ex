@@ -2,21 +2,29 @@ defmodule Survfy.Survey do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Survfy.{Question, Voter, Accounts.User}
+
+  @required_fields [:name, :users_id]
+
+  @derive {Jason.Encoder, only: @required_fields ++ [:id]}
+
   schema "surveys" do
     field :name, :string
-    field :user_id, :id
-    has_many :questions, Survfy.Question
-    has_many :voters, Survfy.Voter
+    field :users_id, :id
+
+    has_many :questions, Question
+    has_many :voters, Voter
 
     timestamps()
   end
 
-  @required_fields ~w(name user_id)
-
-  @doc false
-  def changeset(survey, attrs) do
-    survey
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+  def changeset(params) do
+    %__MODULE__{}
+    |> cast(params, @required_fields)
+    |> foreign_key_constraint(:users_id)
+    |> validate_required(@required_fields)
+    |> validate_length(:name, min: 1)
   end
 end
+
+#{:ok, res} = Survfy.Repo.get(Survfy.Survey, 1) |> Survfy.Repo.preload(:questions)|> Map.fetch(:questions)

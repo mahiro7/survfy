@@ -135,7 +135,8 @@ defmodule SurvfyWeb.UserAuthTest do
       conn = conn |> fetch_flash() |> UserAuth.require_authenticated_user([])
       assert conn.halted
       assert redirected_to(conn) == Routes.user_session_path(conn, :new)
-      assert get_flash(conn, :error) == "You must log in to access this page."
+      assert get_flash(conn, :info) == "Você precisa estar logado para ver suas enquetes.
+      No entanto, nada o impede de votar em enquetes já feitas, sem logar!"
     end
 
     test "stores the path to redirect to on GET", %{conn: conn} do
