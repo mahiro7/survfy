@@ -22,6 +22,9 @@ defmodule SurvfyWeb.Router do
 
     post "/surveys", SurveysController, :create
     post "/questions", QuestionsController, :create
+    post "/choices" , ChoicesController, :create
+    post "/answers", AnswersController, :create
+    post "/voters", VotersController, :create
 
   end
 

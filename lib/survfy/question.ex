@@ -4,7 +4,7 @@ defmodule Survfy.Question do
 
   alias Survfy.{Survey, Choice, Answer}
 
-  @foreign_key_type :integer
+  @foreign_key_type :id
 
   @required_fields [:name, :survey_id]
 

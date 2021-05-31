@@ -2,6 +2,13 @@ defmodule Survfy.Voter do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @foreign_key_type :id
+
+  @required_fields [:session, :user, :survey_id ]
+
+  @derive {Jason.Encoder, only:  @required_fields ++ [:id]}
+
+
   schema "voters" do
     field :session, :string
     field :user, :id
@@ -15,9 +22,10 @@ defmodule Survfy.Voter do
   @fields ~w(session survey_id)
 
   @doc false
-  def changeset(voter, attrs) do
-    voter
-    |> cast(attrs, [:session])
-    |> validate_required([:session])
+  def changeset(params) do
+    %__MODULE__{}
+    |> cast(params, @required_fields)
+    |> foreign_key_constraint(:survey_id)
+    |> validate_required(@required_fields)
   end
 end
