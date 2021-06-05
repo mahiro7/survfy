@@ -12,7 +12,7 @@ defmodule Survfy.Survey do
     field :name, :string
     field :users_id, :id
 
-    has_many :questions, Question
+    has_one :questions, Question
     has_many :voters, Voter
 
     timestamps()

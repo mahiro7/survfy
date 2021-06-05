@@ -44,7 +44,7 @@ defmodule SurvfyWeb.Router do
 
     live "/", FirstPageLive, :index
     live "/allsurveys", AllSurveysLive, :index
-    live "/survey", SurveyVoteLive, :index
+    live "/survey/:id", SurveyVoteLive, :index
   end
 
 

@@ -8,6 +8,8 @@ defmodule Survfy.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :delete, :boolean, virtual: true
+    field :temp_id, :string, virtual: true
 
     timestamps()
   end
@@ -31,9 +33,20 @@ defmodule Survfy.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> Map.put(:temp_id, (user.temp_id || attrs["temp_id"]))
+    |> cast(attrs, [:email, :password, :delete])
     |> validate_email()
     |> validate_password(opts)
+    |> maybe_mark_for_deletion()
+  end
+
+  defp maybe_mark_for_deletion(%{data: %{id: nil}} = changeset), do: changeset
+  defp maybe_mark_for_deletion(changeset) do
+    if get_change(changeset, :delete) do
+      %{changeset | action: :delete}
+    else
+      changeset
+    end
   end
 
   defp validate_email(changeset) do

@@ -1,0 +1,17 @@
+
+
+<h1>Todas enquetes</h1>
+
+<%= for x <- @questions do %>
+   <table>
+    <thead>
+        <tr>
+            <th>
+                <div><%= x.name %></div><br>
+                <div><button phx-click="voteOnQuestion" value=<%= x.id %>>Votar</button></div>
+            </th>
+        </tr>
+    </thead>
+
+</table>
+<% end %>

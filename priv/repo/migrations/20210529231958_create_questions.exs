@@ -4,11 +4,11 @@ defmodule Survfy.Repo.Migrations.CreateQuestions do
   def change do
     create table(:questions) do
       add :name, :string
-      add :survey_id, references(:surveys, on_delete: :nothing)
+      add :users_id, references(:users, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:questions, [:survey_id])
+    create index(:questions, [:users_id])
   end
 end
