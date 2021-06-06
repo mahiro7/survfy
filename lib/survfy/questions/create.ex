@@ -1,10 +1,10 @@
 defmodule Survfy.Questions.Create do
   alias Survfy.{Repo, Question}
 
-  def call(params) do
-    params
-    |> Question.changeset()
-    |> Repo.insert()
+  def call(params \\ %{}) do
+    %Question{}
+    |> Question.changeset(params)
+    |> Repo.insert
     |> handle_insert
   end
 

@@ -1,7 +1,7 @@
 defmodule SurvfyWeb.AllSurveysLive do
   use SurvfyWeb, :live_view
 
-  alias Survfy.{Repo, Question}
+  alias Survfy.{Repo, Question, Questions.Get}
   alias SurvfyWeb.AllSurveysLive, as: Questions
 
   def mount(_params, _session, socket) do
@@ -11,12 +11,13 @@ defmodule SurvfyWeb.AllSurveysLive do
 
     socket =
       socket
-      |> assign(questions: allQuestions)
+      |> assign(questions: Get.get_all)
     {:ok, socket}
   end
 
-  def handle_event("voteOnQuestion", %{"value" => value}, socket) do
+  def handle_event("voteOnQuestion", %{"id" => id}, socket) do
     {:noreply, socket
-      |> redirect(to: "survey")}
-  end
+      |> redirect(to: "/allsurveys/survey/#{id}")}
+
+    end
 end

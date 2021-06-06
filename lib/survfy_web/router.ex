@@ -29,23 +29,24 @@ defmodule SurvfyWeb.Router do
   end
 
   scope "/", SurvfyWeb do
+    pipe_through [:browser]
+
+    live "/", FirstPageLive, :index
+    live "/allsurveys", AllSurveysLive, :index
+    live "/allsurveys/survey/:id", SurveyVoteLive, :index
+  end
+
+  scope "/", SurvfyWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     # All surveys from logged user
     live "/mysurveys", MySurveysLive, :index
     # Change to a specific survey, all votes + % && close opt
-    live "/mysurveys/survey", SurveyLive, :index
+    live "/mysurveys/survey/:id", SurveyLive, :index
     # Live to create a survey
     live "/mysurveys/createsurvey", CreateSurveyLive, :index
   end
 
-  scope "/", SurvfyWeb do
-    pipe_through [:browser]
-
-    live "/", FirstPageLive, :index
-    live "/allsurveys", AllSurveysLive, :index
-    live "/survey/:id", SurveyVoteLive, :index
-  end
 
 
 

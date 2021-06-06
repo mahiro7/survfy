@@ -1,0 +1,11 @@
+<h1 class="pb-7 ml-7"><a href="mysurveys/createsurvey/">Criar enquete</a></h1>
+
+<h1 class="ml-7">Minhas enquetes</h1>
+
+<div class="grid grid-cols-3 gap-4">
+  <%= for question <- @questions do %>
+    <div phx-click="seeResult" value="<%= question.id %>" class="m-7 p-8 border-solid border-4 border-blue-400 hover:border-blue-800 rounded-lg text-center">
+        <div class="text-3x1 font-medium pt-8"><%= question.name %></div><br>
+    </div>
+<% end %>
+</div>

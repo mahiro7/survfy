@@ -2,8 +2,7 @@ defmodule Survfy.Choices.Create do
   alias Survfy.{Repo, Choice}
 
   def call(params) do
-    params
-    |> Choice.changeset()
+    Choice.changeset(params)
     |> Repo.insert()
     |> handle_insert
   end

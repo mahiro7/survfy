@@ -3,7 +3,9 @@ defmodule SurvfyWeb.FirstPageLive do
 
   def render(assigns) do
     ~L"""
-      <div>Bem vindo!</div>
+      <div class="text-center	">
+        <h1 class="self-center pt-10">Bem vindo ao Survfy!</h1>
+      </div>
     """
   end
 

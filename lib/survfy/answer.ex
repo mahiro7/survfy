@@ -6,7 +6,7 @@ defmodule Survfy.Answer do
 
   @foreign_key_type :id
 
-  @required_fields [:voter_id, :choice_id, :question_id]
+  @required_fields [:voter_id, :choice_id]
 
   @derive {Jason.Encoder, only:  @required_fields ++ [:id]}
 
@@ -15,7 +15,7 @@ defmodule Survfy.Answer do
     #field :question_id, :id
     #field :choice_id, :id
     belongs_to :voter, Voter
-    belongs_to :question, Question
+    #belongs_to :question, Question
     belongs_to :choice, Choice
 
     timestamps()
@@ -27,7 +27,7 @@ defmodule Survfy.Answer do
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, @required_fields)
-    |> foreign_key_constraint(:question_id)
+    #|> foreign_key_constraint(:question_id)
     |> foreign_key_constraint(:choice_id)
     |> foreign_key_constraint(:voter_id)
     |> validate_required(@required_fields)

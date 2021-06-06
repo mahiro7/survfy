@@ -1,10 +1,16 @@
-<ul>
-<%= if @current_user do %>
-  <li><%= @current_user.email %></li>
-  <li><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>
-  <li><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
-<% else %>
-  <li><%= link "Register", to: Routes.user_registration_path(@conn, :new) %></li>
-  <li><%= link "Log in", to: Routes.user_session_path(@conn, :new) %></li>
-<% end %>
-</ul>
+<div class="inline-flex p-12">
+  <ul class="inline-flex">
+    <li><a href="/mysurveys/">Minhas enquetes</a></li>
+    <li class="mr-9"><a href="/allsurveys/">Todas enquetes</a></li>
+  </ul>
+  <ul class="absolute right-0 top-2">
+  <%= if @current_user do %>
+    <li><%= @current_user.email %></li>
+    <li><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>
+    <li><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
+  <% else %>
+    <li><%= link "Register", to: Routes.user_registration_path(@conn, :new) %></li>
+    <li><%= link "Log in", to: Routes.user_session_path(@conn, :new) %></li>
+  <% end %>
+  </ul>
+</div>

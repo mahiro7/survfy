@@ -4,7 +4,7 @@ defmodule Survfy.Voter do
 
   @foreign_key_type :id
 
-  @required_fields [:session, :user, :question_id ]
+  @required_fields [:session, :question_id ]
 
   @derive {Jason.Encoder, only:  @required_fields ++ [:id]}
 

@@ -7,6 +7,7 @@ defmodule Survfy.Question do
   @foreign_key_type :id
 
   @required_fields [:name, :users_id]
+  @required [:name, :users_id, :choices]
 
   @derive {Jason.Encoder, only: @required_fields ++ [:id]}
 
@@ -27,11 +28,23 @@ defmodule Survfy.Question do
     |> cast(params, @required_fields)
     |> cast_assoc(:choices)
     |> foreign_key_constraint(:users_id)
-    |> validate_required(@required_fields)
-    |> validate_length(:name, min: 1)
+    |> validate_required(@required)
+    |> validate_length(:choices, min: 2)
+
   end
 
-  def change_question(%__MODULE__{} = question) do
+  def changeset(choice, params) do
+    choice
+    |> cast(params, @required_fields)
+    |> cast_assoc(:choices)
+    |> foreign_key_constraint(:users_id)
+    |> validate_required(@required)
+    |> validate_length(:choices, min: 2)
+  end
+
+  def change_question(%Question{} = question) do
     Question.changeset(%{})
   end
+
+
 end

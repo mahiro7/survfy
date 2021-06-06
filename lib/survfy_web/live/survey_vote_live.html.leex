@@ -1,1 +1,9 @@
-<%= @question.name %>
+<h1><%= @question.name %></h1><br><br>
+<form>
+<%= for choice <- @choices do %>
+    <input type="radio" id="<%= choice.name %>" name="choices" value="<%= choice.id %>">
+    <label for="<%= choice.name %>"><%= choice.name %></label><br><br>
+<% end %>
+
+<br><br><input type="submit" value="Votar">
+</form>
