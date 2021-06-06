@@ -15,20 +15,30 @@ defmodule SurvfyWeb.SurveyVoteLive do
       |> Repo.all()
       |> Repo.preload(:answers)
 
+    %{"voted" => voted} = handle_params(params)
+    votedbool = convert_voted(voted)
+
     totalvotes = get_total_votes(choices)
 
     assigns = [
       token: token,
       question: Questions.get_question!(id),
       choices: choices,
-      voted: voted,
+      voted: votedbool,
       totalvotes: totalvotes
     ]
 
-    IO.inspect(params)
+    IO.inspect(votedbool)
 
     {:ok, assign(socket, assigns)}
   end
+
+  def handle_params(%{"id" => id, "voted" => voted} = params), do: params
+  def handle_params(%{"id" => id}), do: %{"id" => id, "voted" => "false"}
+
+  def convert_voted("true"), do: true
+  def convert_voted("false"), do: false
+
 
   def handle_event("submit", %{"choices" => choice} = params, socket) do
     assigns = socket.assigns

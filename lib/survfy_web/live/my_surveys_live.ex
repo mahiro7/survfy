@@ -25,6 +25,6 @@ defmodule SurvfyWeb.MySurveysLive do
 
     {:noreply,
      socket
-     |> redirect(to: "/survey/#{id}")}
+     |> redirect(to: "/survey/#{id}/true")}
   end
 end
