@@ -30,7 +30,6 @@ defmodule Survfy.Question do
     |> foreign_key_constraint(:users_id)
     |> validate_required(@required)
     |> validate_length(:choices, min: 2)
-
   end
 
   def changeset(choice, params) do
@@ -45,6 +44,4 @@ defmodule Survfy.Question do
   def change_question(%Question{} = question) do
     Question.changeset(%{})
   end
-
-
 end

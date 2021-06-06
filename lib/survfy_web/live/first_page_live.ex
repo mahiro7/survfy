@@ -8,5 +8,4 @@ defmodule SurvfyWeb.FirstPageLive do
       </div>
     """
   end
-
 end

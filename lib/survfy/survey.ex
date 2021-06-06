@@ -27,4 +27,4 @@ defmodule Survfy.Survey do
   end
 end
 
-#{:ok, res} = Survfy.Repo.get(Survfy.Survey, 1) |> Survfy.Repo.preload(:questions)|> Map.fetch(:questions)
+# {:ok, res} = Survfy.Repo.get(Survfy.Survey, 1) |> Survfy.Repo.preload(:questions)|> Map.fetch(:questions)

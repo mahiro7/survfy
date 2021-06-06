@@ -10,20 +10,21 @@ defmodule SurvfyWeb.MySurveysLive do
 
     questions =
       from(Question, where: [users_id: ^user.id])
-      |> Repo.all
+      |> Repo.all()
 
     assigns = [
-       user: user.id,
-       questions: questions
-     ]
+      user: user.id,
+      questions: questions
+    ]
 
+    {:ok, assign(socket, assigns)}
+  end
 
-   {:ok, assign(socket, assigns)}
- end
+  def handle_event("seeResult", %{"id" => id} = params, socket) do
+    IO.inspect(params)
 
- def handle_event("seeResult", %{"value" => value}, socket) do
-  IO.inspect value
-  {:noreply, socket}
- end
-
+    {:noreply,
+     socket
+     |> redirect(to: "/survey/#{id}")}
+  end
 end

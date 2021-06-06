@@ -11,8 +11,8 @@ defmodule Survfy.Choices.Get do
     Repo.get_by(Choice, question_id: id)
   end
 
-  #def get_all do
+  # def get_all do
   #  Repo.all(Choices)
   #  |> Repo.preload(:choices)
-  #end
+  # end
 end

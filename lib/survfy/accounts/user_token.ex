@@ -33,7 +33,7 @@ defmodule Survfy.Accounts.UserToken do
 
   @doc """
   Checks if the token is valid and returns its underlying lookup query.
-
+  
   The query returns the user found by the token.
   """
   def verify_session_token_query(token) do
@@ -48,7 +48,7 @@ defmodule Survfy.Accounts.UserToken do
 
   @doc """
   Builds a token with a hashed counter part.
-
+  
   The non-hashed token is sent to the user email while the
   hashed part is stored in the database, to avoid reconstruction.
   The token is valid for a week as long as users don't change
@@ -73,7 +73,7 @@ defmodule Survfy.Accounts.UserToken do
 
   @doc """
   Checks if the token is valid and returns its underlying lookup query.
-
+  
   The query returns the user found by the token.
   """
   def verify_email_token_query(token, context) do
@@ -100,7 +100,7 @@ defmodule Survfy.Accounts.UserToken do
 
   @doc """
   Checks if the token is valid and returns its underlying lookup query.
-
+  
   The query returns the user token record.
   """
   def verify_change_email_token_query(token, context) do

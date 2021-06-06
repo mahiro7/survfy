@@ -22,10 +22,9 @@ defmodule SurvfyWeb.Router do
 
     post "/surveys", SurveysController, :create
     post "/questions", QuestionsController, :create
-    post "/choices" , ChoicesController, :create
+    post "/choices", ChoicesController, :create
     post "/answers", AnswersController, :create
     post "/voters", VotersController, :create
-
   end
 
   scope "/", SurvfyWeb do
@@ -33,7 +32,8 @@ defmodule SurvfyWeb.Router do
 
     live "/", FirstPageLive, :index
     live "/allsurveys", AllSurveysLive, :index
-    live "/allsurveys/survey/:id", SurveyVoteLive, :index
+    live "/survey/:id", SurveyVoteLive, :index
+    live "/survey/:id/:voted", SurveyVoteLive, :index
   end
 
   scope "/", SurvfyWeb do
@@ -46,9 +46,6 @@ defmodule SurvfyWeb.Router do
     # Live to create a survey
     live "/mysurveys/createsurvey", CreateSurveyLive, :index
   end
-
-
-
 
   # Other scopes may use custom stacks.
   # scope "/api", SurvfyWeb do

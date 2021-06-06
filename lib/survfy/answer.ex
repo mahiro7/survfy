@@ -8,14 +8,14 @@ defmodule Survfy.Answer do
 
   @required_fields [:voter_id, :choice_id]
 
-  @derive {Jason.Encoder, only:  @required_fields ++ [:id]}
+  @derive {Jason.Encoder, only: @required_fields ++ [:id]}
 
   schema "answers" do
-    #field :voter_id, :id
-    #field :question_id, :id
-    #field :choice_id, :id
+    # field :voter_id, :id
+    # field :question_id, :id
+    # field :choice_id, :id
     belongs_to :voter, Voter
-    #belongs_to :question, Question
+    # belongs_to :question, Question
     belongs_to :choice, Choice
 
     timestamps()
@@ -27,7 +27,7 @@ defmodule Survfy.Answer do
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, @required_fields)
-    #|> foreign_key_constraint(:question_id)
+    # |> foreign_key_constraint(:question_id)
     |> foreign_key_constraint(:choice_id)
     |> foreign_key_constraint(:voter_id)
     |> validate_required(@required_fields)

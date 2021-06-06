@@ -3,41 +3,87 @@ defmodule SurvfyWeb.SurveyVoteLive do
 
   import Ecto.Query
 
-  alias Survfy.{Repo, Accounts, Question, Choice}
+  alias Survfy.{Repo, Accounts, Question, Choice, Voter}
   alias Survfy.Questions.Get, as: Questions
   alias Survfy.Choices.Get, as: Choices
   alias Survfy.Voters.Create, as: Voters
-  alias Survy.Answers.Create, as: Answers
+  alias Survfy.Answers.Create, as: Answers
 
   def mount(%{"id" => id} = params, %{"_csrf_token" => token} = session, socket) do
-     choices =
+    choices =
       from(Choice, where: [question_id: ^id])
-      |> Repo.all
+      |> Repo.all()
+      |> Repo.preload(:answers)
 
-      changeset =
+    totalvotes = get_total_votes(choices)
 
-     assigns = [
-        token: token,
-        question: Questions.get_question!(id),
-        choices: choices
-      ]
-      IO.inspect(token)
+    assigns = [
+      token: token,
+      question: Questions.get_question!(id),
+      choices: choices,
+      voted: voted,
+      totalvotes: totalvotes
+    ]
+
+    IO.inspect(params)
 
     {:ok, assign(socket, assigns)}
   end
 
-  def create_voter(_, _, socket) do
-    # First verify if %{session: token, question_id: question}
-    # already exists
+  def handle_event("submit", %{"choices" => choice} = params, socket) do
     assigns = socket.assigns
     token = assigns.token
     question = assigns.question.id
-    Voters.call(%{session: token, question_id: question})
+    choice = choice
+
+    # First verify if %{session: token, question_id: question}
+    # already exists
+    case get_voter(token, question) do
+      :ok ->
+        handle_vote(token, question, choice)
+        reload = reload_choices(question)
+
+        {:noreply,
+         socket
+         |> assign(choices: reload)
+         |> assign(totalvotes: get_total_votes(reload))
+         |> assign(voted: true)
+         |> put_flash(:info, "Votado!")}
+
+      :err ->
+        {:noreply,
+         socket
+         |> assign(totalvotes: get_total_votes(socket.assigns.choices))
+         |> assign(voted: true)
+         |> put_flash(:error, "Você já votou nessa enquete!")}
+    end
   end
 
-  #def vote(_, _, _) do
-  #  voter =
-#
-  #  Answers.call(%{voter_id: voter, choice_id: choice})
-  #end
+  def reload_choices(id) do
+    from(Choice, where: [question_id: ^id])
+    |> Repo.all()
+    |> Repo.preload(:answers)
+  end
+
+  def get_total_votes(choices) do
+    Enum.map(choices, fn x ->
+      length(x.answers)
+    end)
+    # This is 100%
+    |> Enum.sum()
+  end
+
+  def handle_vote(token, question, choice) do
+    {:ok, res} = Voters.call(%{session: token, question_id: question})
+    %{id: voterid} = res
+    Answers.call(%{voter_id: voterid, choice_id: choice})
+  end
+
+  def get_voter(token, question) do
+    Survfy.Repo.get_by(Voter, session: token, question_id: question)
+    |> handle_getvoter
+  end
+
+  def handle_getvoter(nil), do: IO.inspect(:ok)
+  def handle_getvoter(%Voter{}), do: IO.inspect(:err)
 end

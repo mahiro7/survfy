@@ -10,5 +10,4 @@ defmodule Survfy do
   defdelegate create_choice(params), to: ChoiceCreate, as: :call
   defdelegate create_answer(params), to: AnswerCreate, as: :call
   defdelegate create_voter(params), to: VoterCreate, as: :call
-
 end

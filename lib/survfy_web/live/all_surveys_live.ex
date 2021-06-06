@@ -11,13 +11,14 @@ defmodule SurvfyWeb.AllSurveysLive do
 
     socket =
       socket
-      |> assign(questions: Get.get_all)
+      |> assign(questions: Get.get_all())
+
     {:ok, socket}
   end
 
   def handle_event("voteOnQuestion", %{"id" => id}, socket) do
-    {:noreply, socket
-      |> redirect(to: "/allsurveys/survey/#{id}")}
-
-    end
+    {:noreply,
+     socket
+     |> redirect(to: "/survey/#{id}")}
+  end
 end

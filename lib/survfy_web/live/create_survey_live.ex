@@ -17,16 +17,15 @@ defmodule SurvfyWeb.CreateSurveyLive do
       Question.change_question(question)
       |> Ecto.Changeset.put_assoc(:choices, question.choices)
 
-
     assigns = [
       user: user,
       changeset: changeset,
       choicenumber: [3],
       question: question
     ]
+
     {:ok, assign(socket, assigns)}
   end
-
 
   def handle_event("validate", %{"question" => %{"name" => name} = question} = params, socket) do
     %{user: user} = socket.assigns
@@ -47,28 +46,29 @@ defmodule SurvfyWeb.CreateSurveyLive do
     changeset = socket.assigns.changeset
 
     %{name: name, users_id: id, choices: choices} = changeset.changes
-    #Enum.map(choices, fn x -> IO.inspect x.data end)
+    # Enum.map(choices, fn x -> IO.inspect x.data end)
 
-    {:ok, res} = Questions.call %{name: name, users_id: id}
+    {:ok, res} = Questions.call(%{name: name, users_id: id})
     %{id: questionid} = res
+
     Enum.map(choices, fn x ->
-      #IO.inspect socket
+      # IO.inspect socket
       x.changes
       |> Map.put(:question_id, questionid)
       |> Map.put(:temp_id, x.data.temp_id)
-      |> Choices.call
+      |> Choices.call()
     end)
 
-    #IO.inspect changeset
-
+    # IO.inspect changeset
 
     case changeset.valid? do
       true ->
-        #Create.call(changeset.changes)
-        {:noreply, socket
-          |> put_flash(:info, "Questão inserida")
-          |> redirect(to: "/mysurveys")
-      }
+        # Create.call(changeset.changes)
+        {:noreply,
+         socket
+         |> put_flash(:info, "Questão inserida")
+         |> redirect(to: "/mysurveys")}
+
       false ->
         {:noreply, assign(socket, :changeset, %{changeset | action: :insert})}
     end
@@ -83,11 +83,11 @@ defmodule SurvfyWeb.CreateSurveyLive do
         Choice.change_choice(%Choice{temp_id: get_temp_id()})
       ])
 
-      IO.inspect(socket.assigns.changeset)
+    IO.inspect(socket.assigns.changeset)
 
-     changeset =
-       socket.assigns.changeset
-       |> Ecto.Changeset.put_assoc(:choices, choices)
+    changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_assoc(:choices, choices)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
@@ -109,5 +109,5 @@ defmodule SurvfyWeb.CreateSurveyLive do
   def get_question(%{"id" => id} = _question_params), do: Get.get_question!(id)
   def get_question(_question_params), do: %Question{choices: []}
 
-  defp get_temp_id, do: :crypto.strong_rand_bytes(5) |> Base.url_encode64 |> binary_part(0, 5)
+  defp get_temp_id, do: :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
 end

@@ -4,7 +4,7 @@ defmodule Survfy.Questions.Create do
   def call(params \\ %{}) do
     %Question{}
     |> Question.changeset(params)
-    |> Repo.insert
+    |> Repo.insert()
     |> handle_insert
   end
 
