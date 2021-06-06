@@ -1,21 +1,35 @@
 <h1><%= @question.name %></h1><br><br>
 
 <%= if @voted == false do %>
+
     <form phx-submit="submit">
     <%= for choice <- @choices do %>
         <input type="radio" id="<%= choice.name %>" name="choices" value="<%= choice.id %>">
         <label for="<%= choice.name %>"><%= choice.name %></label><br><br>
     <% end %>
     <br><br><input type="submit" value="Votar">
+
 <% else %>
+
     <%= for choice <- @choices do %>
-        <div>
-            <label><%= choice.name %>   ->   Votos: <%= length choice.answers %>, Porcentagem:
+        <div class="flex-col">
+
+            <label class="m-0 p-0"><%= choice.name %>   ->   Votos: <%= length choice.answers %>, Porcentagem:
             <%= if @totalvotes == 0 do %>
                 <%= "0%" %>
             <% else %>
                 <%= 100*length(choice.answers)/@totalvotes |> Float.ceil(2) %>%
-            <% end %></label><br><br>
+            <% end %>
+            <div class="font-mono text-xs font-bold text-blue-700">
+                <%= for x <- 0..(100*length(choice.answers)/@totalvotes |> round) do %>
+                  <%= if x == 0 do ">" end %>
+                  <%= if x > 0 do "|" end %>
+                <% end %>
+                <%= for i <- (100*length(choice.answers)/@totalvotes |> round)..101 do %>
+                    <%= if i == 101 do %> < <% else %> &nbsp <% end %>
+                <% end %>
+            </div><br><br>
+            </label>
         </div>
     <% end %>
 
