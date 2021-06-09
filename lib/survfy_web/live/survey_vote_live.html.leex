@@ -21,13 +21,15 @@
                 <%= 100*length(choice.answers)/@totalvotes |> Float.ceil(2) %>%
             <% end %>
             <div class="font-mono text-xs font-bold text-blue-700">
+              <%= if @totalvotes != 0 do %>
                 <%= for x <- 0..(100*length(choice.answers)/@totalvotes |> round) do %>
                   <%= if x == 0 do ">" end %>
                   <%= if x > 0 do "|" end %>
                 <% end %>
                 <%= for i <- (100*length(choice.answers)/@totalvotes |> round)..101 do %>
-                    <%= if i == 101 do %> < <% else %> &nbsp <% end %>
+                  <%= if i == 101 do %> < <% else %> &nbsp <% end %>
                 <% end %>
+              <% end %>
             </div><br><br>
             </label>
         </div>
